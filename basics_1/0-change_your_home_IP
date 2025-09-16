@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#config localhost and facebook
+
+set -euo pipefail
+
+if [ "${EUID:-$(id -u)}" -ne 0 ]; then
+	echo "Please run as root (sudo $0)"
+	exit 1
+fi
+
+HOST_FILE="/etc/hosts"
+BACKUP="/etc/hosts.bak.$(date +%s)"
+
+cp -f "$HOST_FILE" "$BACKUP"
+echo "Backup created at: $BACKUP"
