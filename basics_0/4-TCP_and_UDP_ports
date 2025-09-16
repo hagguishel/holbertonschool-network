@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#afficher les port TCP/UDP
+
+ss -lpn
