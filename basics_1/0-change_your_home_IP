@@ -1,27 +1,5 @@
 #!/usr/bin/env bash
 #config localhost and facebook
 
-set -euo pipefail
-
-if [ "${EUID:-$(id -u)}" -ne 0 ]; then
-	echo "Please run as root (sudo $0)"
-	exit 1
-fi
-
-HOST_FILE="/etc/hosts"
-BACKUP="/etc/hosts.bak.$(date +%s)"
-
-cp -f "$HOST_FILE" "$BACKUP"
-echo "Backup created at: $BACKUP"
-
-sed -i '/^[[:space:]]*127\.0\.0\.1[[:space:]].*\blocalhost\b/s/^/# changed by 0-change_your_home_IP: /' "$HOST_FILE"
-
-if ! grep -qE '^[[:space:]]*127\.0\.0\.2[[:space:]]+localhost(\b|[[:space:]])' "$HOST_FILE";then
-	printf '127.0.0.2\tlocalhost\n' >> "$HOST_FILE"
-fi
-
-sed -i '/\bfacebook\.com\b/d' "$HOST_FILE"
-printf '8.8.8.8\tfacebook.com\n' >> "$HOST_FILE"
-
-echo '--- /etc/hosts extrait ---'
-grep -nE 'localhost|facebook\.com' "$HOST_FILE" || true
+echo "127.0.0.2 localhost" > /etc/hosts
+echo "8.8.8.8 facebook.com" >> /etc/hosts
